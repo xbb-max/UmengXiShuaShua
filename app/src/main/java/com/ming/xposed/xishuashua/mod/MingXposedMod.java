@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.ming.util.common.Util;
 import com.ming.xposed.xishuashua.XiShuaShuaConf;
 import com.ming.xposed.xishuashua.mod.logic.RunLogic;
-
+import com.ming.xposed.xishuashua.util.PoyiUtil;
 
 
 import java.net.URL;
@@ -262,7 +262,6 @@ public class MingXposedMod implements IXposedHookLoadPackage
 		Hashtable<String, String> values = xposedConf.getValues("Build");
 		if(values!=null)
 		{
-			Util.debug("----values.get(\"MODEL\") "+values.get("MODEL"));
 	        XposedHelpers.setStaticObjectField(Build.class, "ID", values.get("ID"));
 	        XposedHelpers.setStaticObjectField(Build.class, "BOARD", values.get("BOARD"));
 	        XposedHelpers.setStaticObjectField(Build.class, "BOOTLOADER", values.get("BOOTLOADER"));
@@ -287,6 +286,19 @@ public class MingXposedMod implements IXposedHookLoadPackage
 	        XposedHelpers.setStaticObjectField(Build.VERSION.class, "RELEASE", values.get("VERSION_RELEASE"));
 	        XposedHelpers.setStaticObjectField(Build.VERSION.class, "SDK", values.get("VERSION_SDK"));
 	      //  XposedHelpers.setStaticIntField(Build.VERSION.class, "SDK_INT", Util.getInt((String)values.get("VERSION_SDK_INT")));
+			Hashtable<String, String>  telValues = xposedConf.getValues("TelephonyManager");
+			Hashtable<String, String>  wifiValues = xposedConf.getValues("WifiInfo");
+			PoyiUtil.sendShell(" setphone -a " + values.get("android_id") +
+					" -m " +  values.get("MANUFACTURER") +
+							" -s " + "OWKPELYSDZBGFPFU" +
+					" -i" + telValues.get("imei")+
+					" -w " + wifiValues.get("getMacAddress") +
+					" -n " + wifiValues.get("getSSID")+
+					" -b " + values.get("BRAND") +
+					" -o " + values.get("MODEL") +
+					" -e" + telValues.get("imsi") +
+					" -p " + values.get("PRODUCT")
+					,5000);
 		}
 	}
 
