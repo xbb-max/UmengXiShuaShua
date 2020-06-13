@@ -1,0 +1,7 @@
+222
+0
+2
+js_6_1_12,80|js_6_1_11,10
+<Build RADIO="A590" PRODUCT="A590_4.0.562" CPU_ABI2="armeabi" USER="root" CPU_ABI="armeabi-v7a" ID="OCG97X" MANUFACTURER="Lenovo" TYPE="user" HARDWARE="Lenovo" VERSION_SDK_INT="16" VERSION_RELEASE="4.2.8" TIME="1778213480000" VERSION_INCREMENTAL="eng.root.2012.510154" VERSION_CODENAME="REL" MODEL="A590" DEVICE="Lenovo_30_23" DISPLAY="A590_4.0.562" FINGERPRINT="A590/Lenovo_30_23/A590_4.0.562/OCG97X/8612:user/test-keys" TAGS="test-keys" HOST="Lenovo" VERSION_SDK="16" BOARD="omap3630" BOOTLOADER="A590" BRAND="Lenovo"/>
+<TelephonyManager getSimOperator="46002" getSimState="1" getSimOperatorName="CHINA MOBILE" isNetworkRoaming="false" getNetworkCountryIso="cn" getSimCountryIso="cn" getNetworkType="1" getLine1Number="+8614718584303" getCallState="0" getPhoneType="1" getNetworkOperator="46002" getNetworkOperatorName="CHINA MOBILE" imei="861540102479899" getDeviceSoftwareVersion="01" imsi="460026545642768" hasIccCard="true" getSimSerialNumber="89860068141368792407"/>
+<WifiInfo getMacAddress="66:DE:B7:73:A8:BD" getBSSID="92:fb:49:53:61:bb" getSSID="ALPHA A8"/>
