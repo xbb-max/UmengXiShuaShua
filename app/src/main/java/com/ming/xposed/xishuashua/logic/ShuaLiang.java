@@ -20,12 +20,14 @@ import com.ming.xposed.xishuashua.bean.RemoteData;
 import com.ming.xposed.xishuashua.conf.MingConf;
 import com.ming.xposed.xishuashua.conf.RemoteConf;
 import com.ming.xposed.xishuashua.conf.TimeConf;
+import com.ming.xposed.xishuashua.mod.XposedConf;
 import com.ming.xposed.xishuashua.util.Base64;
 import com.ming.xposed.xishuashua.util.PoyiUtil;
 
 import java.io.File;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Hashtable;
 import java.util.Random;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -190,62 +192,79 @@ public class ShuaLiang implements Runnable {
 			long l = 0;
 			if (startNum % 2 == 0)
 			{
-				Util.debug("new--------------------------------------------------------");
+			Util.debug("new--------------------------------------------------------");
 //				remoteConf.loadConf();
 //                showTips("this.filePath "+this.filePath,5);
-				PoyiUtil.sendShell("ipclient 830e2bea02fe476282241dc31ac49459 1",5000);
-				int ret = remoteConf.loadNetConf();
-				showTips("loadNetConf ret "+ret,5);
-				if (ret <0)
-				{
-					return;
-				}
-				String confProp = null;
-				if(remoteConf.bind_status==2||remoteConf.bind_status==3)
-				{
-					Util.delFile(this.filePath + "/mingconf.prop");
-					PoyiUtil.clearApplicationUserData(context,app.pack);
-					Util.delFile(Environment.getExternalStorageDirectory().getPath()+"/.dciduPlus/.dcidConfig");
-					Util.delFolder(Environment.getExternalStorageDirectory().getPath()+"/.dciduPlus/");
-
-					Util.delFile(Environment.getExternalStorageDirectory().getPath()+"/.DataStorage/ContextData.xml");
-					Util.delFolder(Environment.getExternalStorageDirectory().getPath()+"/.DataStorage/");
-
-					Util.delFile(Environment.getExternalStorageDirectory().getPath()+"/.UTSystemConfig/Global/Alvin2.xml");
-					Util.delFolder(Environment.getExternalStorageDirectory().getPath()+"/.UTSystemConfig/");
-
-					Util.delFile(Environment.getExternalStorageDirectory().getPath()+"/data/.push_deviceid");
-					Util.delFolder(Environment.getExternalStorageDirectory().getPath()+"/data/");
-					Util.delFolder(Environment.getExternalStorageDirectory().getPath());
-
-					confProp = remoteConf.deviceConf;
-                    //showTips("remoteConf.deviceConf "+remoteConf.deviceConf,5);
-					if(confProp!=null)
-					{
-						Util.debug("wirte mingconf.prop file ---"+confProp +" length="+confProp.length());
-						writeFileData(this.context,this.filePath + "/mingconf.prop", confProp);
-//                        writeFileData(this.context,this.filePath + "/bei.prop", confProp);
-                    }
-				}
-				//Util.debug("confProp---"+confProp);
-				Util.debug("bind_status---"+remoteConf.bind_status);
-				if(remoteConf.bind_status==2)
-				{
-					String conf = new String(Base64.encode(remoteConf.deviceConf.getBytes()));
-					//Util.debug("conf---"+conf);
-					remoteConf.uploadConf(URLEncoder.encode(URLEncoder.encode(conf,"utf-8"),"utf-8"),2);
-					shuaCount++;
-				}
-				if(remoteConf.bind_status==3)
-				{
-					String conf = new String(Base64.encode(remoteConf.deviceConf.getBytes()));
-					//Util.debug("conf---"+conf);
-					remoteConf.uploadConf(URLEncoder.encode(URLEncoder.encode(conf,"utf-8"),"utf-8"),4);
-				}
-				//Util.debug("shuaCount------:"+ shuaCount );
-				long time = TimeConf.getTime();
-				l =  -1* time;
+			PoyiUtil.sendShell("ipclient 830e2bea02fe476282241dc31ac49459 1",5000);
+			int ret = remoteConf.loadNetConf();
+			showTips("loadNetConf ret "+ret,5);
+			if (ret <0)
+			{
+				return;
 			}
+			String confProp = null;
+			if(remoteConf.bind_status==2||remoteConf.bind_status==3)
+			{
+				Util.delFile(this.filePath + "/mingconf.prop");
+				PoyiUtil.clearApplicationUserData(context,app.pack);
+				Util.delFile(Environment.getExternalStorageDirectory().getPath()+"/.dciduPlus/.dcidConfig");
+				Util.delFolder(Environment.getExternalStorageDirectory().getPath()+"/.dciduPlus/");
+
+				Util.delFile(Environment.getExternalStorageDirectory().getPath()+"/.DataStorage/ContextData.xml");
+				Util.delFolder(Environment.getExternalStorageDirectory().getPath()+"/.DataStorage/");
+
+				Util.delFile(Environment.getExternalStorageDirectory().getPath()+"/.UTSystemConfig/Global/Alvin2.xml");
+				Util.delFolder(Environment.getExternalStorageDirectory().getPath()+"/.UTSystemConfig/");
+
+				Util.delFile(Environment.getExternalStorageDirectory().getPath()+"/data/.push_deviceid");
+				Util.delFolder(Environment.getExternalStorageDirectory().getPath()+"/data/");
+				Util.delFolder(Environment.getExternalStorageDirectory().getPath());
+
+				confProp = remoteConf.deviceConf;
+				//showTips("remoteConf.deviceConf "+remoteConf.deviceConf,5);
+				if(confProp!=null)
+				{
+					Util.debug("wirte mingconf.prop file ---"+confProp +" length="+confProp.length());
+					writeFileData(this.context,this.filePath + "/mingconf.prop", confProp);
+					XposedConf xposedConf = new XposedConf();
+					xposedConf.load();
+					Hashtable<String, String> values = xposedConf.getValues("Build");
+					Hashtable<String, String> telValues = xposedConf.getValues("TelephonyManager");
+					Hashtable<String, String>  wifiValues = xposedConf.getValues("WifiInfo");
+					PoyiUtil.sendShell(" setphone -a " + values.get("android_id") +
+									" -m " +  values.get("MANUFACTURER") +
+									" -s " + "OWKPELYSDZBGFPFU" +
+									" -i" + telValues.get("imei")+
+									" -w " + wifiValues.get("getMacAddress") +
+									" -n " + wifiValues.get("getSSID")+
+									" -b " + values.get("BRAND") +
+									" -o " + values.get("MODEL") +
+									" -e" + telValues.get("imsi") +
+									" -p " + values.get("PRODUCT")
+							,5000);
+//                        writeFileData(this.context,this.filePath + "/bei.prop", confProp);
+				}
+			}
+			//Util.debug("confProp---"+confProp);
+			Util.debug("bind_status---"+remoteConf.bind_status);
+			if(remoteConf.bind_status==2)
+			{
+				String conf = new String(Base64.encode(remoteConf.deviceConf.getBytes()));
+				//Util.debug("conf---"+conf);
+				remoteConf.uploadConf(URLEncoder.encode(URLEncoder.encode(conf,"utf-8"),"utf-8"),2);
+				shuaCount++;
+			}
+			if(remoteConf.bind_status==3)
+			{
+				String conf = new String(Base64.encode(remoteConf.deviceConf.getBytes()));
+				//Util.debug("conf---"+conf);
+				remoteConf.uploadConf(URLEncoder.encode(URLEncoder.encode(conf,"utf-8"),"utf-8"),4);
+			}
+			//Util.debug("shuaCount------:"+ shuaCount );
+			long time = TimeConf.getTime();
+			l =  -1* time;
+
+		}
 			else
 			{
 				Util.debug("upload--------------------------------------------------------");

@@ -286,19 +286,7 @@ public class MingXposedMod implements IXposedHookLoadPackage
 	        XposedHelpers.setStaticObjectField(Build.VERSION.class, "RELEASE", values.get("VERSION_RELEASE"));
 	        XposedHelpers.setStaticObjectField(Build.VERSION.class, "SDK", values.get("VERSION_SDK"));
 	      //  XposedHelpers.setStaticIntField(Build.VERSION.class, "SDK_INT", Util.getInt((String)values.get("VERSION_SDK_INT")));
-			Hashtable<String, String>  telValues = xposedConf.getValues("TelephonyManager");
-			Hashtable<String, String>  wifiValues = xposedConf.getValues("WifiInfo");
-			PoyiUtil.sendShell(" setphone -a " + values.get("android_id") +
-					" -m " +  values.get("MANUFACTURER") +
-							" -s " + "OWKPELYSDZBGFPFU" +
-					" -i" + telValues.get("imei")+
-					" -w " + wifiValues.get("getMacAddress") +
-					" -n " + wifiValues.get("getSSID")+
-					" -b " + values.get("BRAND") +
-					" -o " + values.get("MODEL") +
-					" -e" + telValues.get("imsi") +
-					" -p " + values.get("PRODUCT")
-					,5000);
+
 		}
 	}
 
